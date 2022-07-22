@@ -7,20 +7,21 @@ use parser::parse;
 use std::env::args;
 use types::*;
 
-const USAGE: &str = "Usage: <command> <expression>";
-
 fn main() -> Result<()> {
     let mut args = args();
     let _ = args.next();
-    let input = args.next().expect(USAGE);
+
+    let input = args.next().ok_or(Error::Usage)?;
+
     if args.next().is_some() {
-        panic!("{USAGE}");
+        return Err(Error::Usage);
     }
 
     let mut input = input.chars();
     let tokens = lex(&mut input)?;
     let expr = parse(tokens)?;
 
-    println!("{:?}", expr);
+    println!("{expr}");
+
     Ok(())
 }

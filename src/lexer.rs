@@ -33,7 +33,9 @@ fn parse(chars: &mut Peekable<impl Iterator<Item = char>>) -> Result<Vec<Token>>
             _ => return Err(Error::Unexpected(c.into())),
         };
 
-        chars.next();
+        if matches!(token, Token::Op(_) | Token::Paren(_)) {
+            chars.next();
+        }
 
         tokens.push(token);
     }
@@ -67,7 +69,7 @@ mod tests {
         let chars = &mut "123.456".chars().peekable();
         assert_eq!(parse_num(chars).unwrap().to_string(), "123.456");
 
-        let chars = &mut "0.13".chars().peekable();
-        assert_eq!(parse_num(chars).unwrap().to_string(), "-0.13");
+        let chars = &mut "0.13-2".chars().peekable();
+        assert_eq!(parse_num(chars).unwrap().to_string(), "0.13");
     }
 }
