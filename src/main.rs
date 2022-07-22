@@ -1,7 +1,9 @@
+mod eval;
 mod lexer;
 mod parser;
 mod types;
 
+use eval::eval;
 use lexer::lex;
 use parser::parse;
 use std::env::args;
@@ -21,7 +23,8 @@ fn main() -> Result<()> {
     let tokens = lex(&mut input)?;
     let expr = parse(tokens)?;
 
-    println!("{expr}");
+    let result = eval(expr)?;
+    println!("{result}");
 
     Ok(())
 }
