@@ -2,8 +2,6 @@ use crate::types::*;
 use rust_decimal::prelude::*;
 use std::iter::Peekable;
 
-type Result<T> = std::result::Result<T, Error>;
-
 pub fn lex(chars: impl Iterator<Item = char>) -> Result<Box<dyn Iterator<Item = Token>>> {
     let tokens = parse(&mut chars.peekable())?;
 
@@ -23,7 +21,7 @@ fn parse(chars: &mut Peekable<impl Iterator<Item = char>>) -> Result<Vec<Token>>
                 if let Some(num) = parse_num(chars) {
                     Token::Num(num)
                 } else {
-                    return Err(Error::Unexpected(c));
+                    return Err(Error::Unexpected(c.into()));
                 }
             }
             '+' => Token::Op(Op::Add),
@@ -32,7 +30,7 @@ fn parse(chars: &mut Peekable<impl Iterator<Item = char>>) -> Result<Vec<Token>>
             '/' => Token::Op(Op::Div),
             '(' => Token::Paren(Paren::Open),
             ')' => Token::Paren(Paren::Close),
-            _ => return Err(Error::Unexpected(c)),
+            _ => return Err(Error::Unexpected(c.into())),
         };
 
         chars.next();

@@ -1,15 +1,15 @@
 mod lexer;
-// mod parser;
+mod parser;
 mod types;
 
 use lexer::lex;
+use parser::parse;
 use std::env::args;
-// use parser::parse;
 use types::*;
 
 const USAGE: &str = "Usage: <command> <expression>";
 
-fn main() -> Result<(), Error> {
+fn main() -> Result<()> {
     let mut args = args();
     let _ = args.next();
     let input = args.next().expect(USAGE);
@@ -19,8 +19,8 @@ fn main() -> Result<(), Error> {
 
     let mut input = input.chars();
     let tokens = lex(&mut input)?;
-    // let expr = parse(tokens)?;
+    let expr = parse(tokens)?;
 
-    println!("{:?}", tokens.collect::<Vec<_>>());
+    println!("{:?}", expr);
     Ok(())
 }
