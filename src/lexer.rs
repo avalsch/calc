@@ -59,17 +59,3 @@ fn parse_num(chars: &mut Peekable<impl Iterator<Item = char>>) -> Option<Decimal
 
     Decimal::from_str(&num).ok()
 }
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_parse_num() {
-        let chars = &mut "123.456".chars().peekable();
-        assert_eq!(parse_num(chars).unwrap().to_string(), "123.456");
-
-        let chars = &mut "0.13-2".chars().peekable();
-        assert_eq!(parse_num(chars).unwrap().to_string(), "0.13");
-    }
-}

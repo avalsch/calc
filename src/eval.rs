@@ -1,5 +1,5 @@
-use rust_decimal::Decimal;
 use crate::types::*;
+use rust_decimal::Decimal;
 
 pub fn eval(expr: Expr) -> Result<Decimal> {
     Ok(match expr {
