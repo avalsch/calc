@@ -17,7 +17,7 @@ fn parse_expr(tokens: &mut Peekable<impl Iterator<Item = Token>>, precedence: i3
             _ => return Err(Error::Unexpected(token.to_string())),
         };
 
-        if op.precedence() < precedence {
+        if op.precedence() <= precedence {
             break;
         }
 
