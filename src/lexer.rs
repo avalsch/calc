@@ -2,10 +2,10 @@ use crate::types::*;
 use rust_decimal::prelude::*;
 use std::iter::Peekable;
 
-pub fn lex(chars: impl Iterator<Item = char>) -> Result<Box<dyn Iterator<Item = Token>>> {
+pub fn lex(chars: impl Iterator<Item = char>) -> Result<impl Iterator<Item = Token>> {
     let tokens = parse(&mut chars.peekable())?;
 
-    Ok(Box::new(tokens.into_iter()))
+    Ok(tokens.into_iter())
 }
 
 fn parse(chars: &mut Peekable<impl Iterator<Item = char>>) -> Result<Vec<Token>> {

@@ -34,11 +34,14 @@ fn null_denotation(tokens: &mut Peekable<impl Iterator<Item = Token>>) -> Result
     let expr = match token {
         Token::Num(num) => Expr::Num(num),
         Token::Op(op) if op == Op::Add || op == Op::Sub => {
-            Expr::Unary(op, Box::new(parse_expr(tokens, 0)?))
+            Expr::Unary(op, Box::new(parse_expr(tokens, 100)?))
         }
         Token::Paren(Paren::Open) => {
             let expr = parse_expr(tokens, 0)?;
-            tokens.next().ok_or(Error::MissingParen)?;
+            let Some(Token::Paren(Paren::Close)) = tokens.next() else {
+                return Err(Error::MissingParen);
+            };
+
             expr
         }
         _ => return Err(Error::Unexpected(token.to_string())),
